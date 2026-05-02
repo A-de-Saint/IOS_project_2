@@ -3,11 +3,11 @@
 
 #include "semaphores.h"
 #include "shared_mem.h"
-#include "output.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdarg.h>
 
 void dispatcher_process(shared_t *shm, semaphores_t *sem, FILE *file, int O);
 

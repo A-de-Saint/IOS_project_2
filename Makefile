@@ -21,5 +21,5 @@ $(OBJ):
 	mkdir -p $@
 
 clean:
-	rm -rf $(OBJ)
+	rm -rf $(OBJ) proj2
 

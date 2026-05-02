@@ -1,8 +1,12 @@
 #include "processes.h"
 #include <time.h>
 
-//declaration of function choosing random value
+//returns random integer value between min and max
 int rand_between(int min, int max);
+
+//prints action to file synchronously
+//mutex MUST BE LOCKED when calling this function
+void print_action(shared_t *shm, FILE *file, const char *fmt, ...);
 
 void dispatcher_process(shared_t *shm, semaphores_t *sem, FILE *file, int O)
 {
@@ -240,5 +244,24 @@ int rand_between(int min, int max)
 		return max;
 
 	return rand() % (max - min) + min;
+}
+
+//prints action to file synchronously
+//mutex MUST BE LOCKED when calling this function
+void print_action(shared_t *shm, FILE *file, const char *fmt, ...)
+{
+	//read arguments to argument list
+	va_list fmt_args;
+	va_start(fmt_args, fmt);
+
+	//print number of action
+	fprintf(file, "%d: ", shm->action_counter);
+	shm->action_counter++;
+
+	//print what the caller has to say
+	vfprintf(file, fmt, fmt_args);
+	fflush(file);
+
+	va_end(fmt_args);
 }
 
