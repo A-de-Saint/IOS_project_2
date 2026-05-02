@@ -1,0 +1,28 @@
+#ifndef SHARED_MEM_H
+#define SHARED_MEM_H
+
+#include <sys/mman.h>
+
+//struct of shared info
+typedef struct {
+	int action_counter; 	//counts number of actions made 							(1)
+	int visitors_left; 		//number of visitors left to escort 						(visitors_N)
+	int to_be_boarded; 		//number of visitors that fit into the current cart 		(undef)
+	int boarding_cart_id; 	//the id of the cart that is currently open for boarding 	(undef)
+	int to_leave_cart; 		//number of visitors left to leave the cart 				(undef)
+	int leaving_cart_id; 	//the id of the cart that is currently open for leaving 	(undef)
+	bool closing; 			//whether the attraction is closing or not 					(false)
+	int forked_count;		//count of running forked processes (main excluded)			(forked_count)
+} shared_t;
+
+//maps and initializes shared memory (according to info in '()' above)
+shared_t *shared_mem_init(int visitors_N, int forked_count);
+
+//unmaps shared memory
+inline void shared_dtor(shared_t *shm)
+{
+	munmap(sh, sizeof(shared_t));
+}
+
+#endif
+
