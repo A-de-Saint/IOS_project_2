@@ -1,8 +1,14 @@
 #include "processes.h"
+#include <time.h>
+
+//declaration of function choosing random value
+int rand_between(int min, int max);
 
 void dispatcher_process(shared_t *shm, semaphores_t *sem, FILE *file, int O)
 {
+	sem_wait(&sem->mutex);
 	print_action(shm, file, "D: started\n");
+	sem_post(&sem->mutex);
 
 	while(true)
 	{
@@ -46,6 +52,9 @@ void dispatcher_process(shared_t *shm, semaphores_t *sem, FILE *file, int O)
 
 void cart_process(shared_t *shm, semaphores_t *sem, FILE *file, int v_id, int TV, int cart_capacity)
 {
+	//set seed for rng
+	srand(time(NULL) * v_id);
+
 	sem_wait(&sem->mutex);
 	print_action(shm, file, "V %d: started\n", v_id);
 	sem_post(&sem->mutex);
@@ -97,8 +106,8 @@ void cart_process(shared_t *shm, semaphores_t *sem, FILE *file, int v_id, int TV
 		//notify dispatcher about departure
 		sem_post(&sem->cart_leaving);
 
-		//wait for TV/2ms and wait to be the only cart in the destination (TODO rand)
-		usleep(TV/2);
+		//wait for TV/2mics and wait to be the only cart in the destination
+		usleep(rand_between(TV/2, TV));
 
 		while (true)
 		{
@@ -129,11 +138,11 @@ void cart_process(shared_t *shm, semaphores_t *sem, FILE *file, int v_id, int TV
 
 			//wait until cart is empty (cue from the last visitor to leave)
 			sem_wait(&sem->cart_emptied);
-			sem_post(&sem->cart_emptying);
 
 			sem_wait(&sem->mutex);
 			print_action(shm, file, "V %d: leaving complete\n", v_id);
 			sem_post(&sem->mutex);
+			sem_post(&sem->cart_emptying); //let other carts be emptied
 
 			break; //if here, everything worked out
 		}
@@ -158,7 +167,7 @@ void visitor_process(shared_t *shm, semaphores_t *sem, FILE *file, int n_id, int
 	sem_post(&sem->mutex);
 
 	//wait in given interval
-	usleep(TN);	//TODO rand
+	usleep(rand_between(0, TN));
 
 	sem_wait(&sem->mutex);
 	print_action(shm, file, "N %d: queue\n", n_id);
@@ -222,3 +231,14 @@ void visitor_process(shared_t *shm, semaphores_t *sem, FILE *file, int n_id, int
 
 	exit(0);
 }
+
+//returns random integer within given interval
+int rand_between(int min, int max)
+{
+	//cannot divide by zero
+	if (max == min)
+		return max;
+
+	return rand() % (max - min) + min;
+}
+
