@@ -2,6 +2,7 @@
 #define SHARED_MEM_H
 
 #include <sys/mman.h>
+#include <stdbool.h>
 
 //struct of shared info
 typedef struct {
@@ -19,10 +20,7 @@ typedef struct {
 shared_t *shared_mem_init(int visitors_N, int forked_count);
 
 //unmaps shared memory
-inline void shared_dtor(shared_t *shm)
-{
-	munmap(sh, sizeof(shared_t));
-}
+void shared_dtor(shared_t *shm);
 
 #endif
 

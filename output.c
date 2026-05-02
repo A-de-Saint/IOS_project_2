@@ -1,6 +1,6 @@
 #include "output.h"
 
-void print_action(shared *shm, sem_t mutex, FILE *file, const char *fmt, ...)
+void print_action(shared_t *shm, sem_t *mutex, FILE *file, const char *fmt, ...)
 {
 	//read arguments to argument list
 	va_list fmt_args;
@@ -11,11 +11,11 @@ void print_action(shared *shm, sem_t mutex, FILE *file, const char *fmt, ...)
 
 	//print number of action
 	fprintf(file, "%d: ", shm->action_counter);
-	action_counter++;
+	shm->action_counter++;
 
 	//print what the caller has to say
-	vfrpintf(file, fmt, fmt_args);
-	fflush(f);
+	vfprintf(file, fmt, fmt_args);
+	fflush(file);
 
 	/* exitting mutex */
 	sem_post(mutex);

@@ -1,4 +1,5 @@
 #include "semaphores.h"
+#include <stdlib.h>
 
 semaphores_t *semaphores_init()
 {	

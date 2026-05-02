@@ -3,8 +3,11 @@
 #include <signal.h>
 #include <unistd.h>
 #include <sys/types.h>
-#include "argument_parser.h"
+#include <sys/wait.h>
+#include "args_parser.h"
 #include "semaphores.h"
+#include "shared_mem.h"
+#include "processes.h"
 
 #define OUTPUT_FILENAME "proj2.out"
 
@@ -57,12 +60,12 @@ int main(int argc, char **argv)
 
 	//fork dispatcher
 	pid_t pid = fork();
-	if (p < 0)
+	if (pid < 0)
 	{
 		fprintf(stderr, "Dispatcher fork failed\n");
 		goto fork_error_exit;
 	}
-	if (p == 0) //true for child (dispatcher)
+	if (pid == 0) //true for child (dispatcher)
 	{
 		dispatcher_process(shm, sems, file, args.O);
 	}
@@ -90,7 +93,7 @@ int main(int argc, char **argv)
 			goto fork_error_exit;
 		}
 		if (pid == 0) //true for child (visitor)
-			visitor_process(shm, sems, file, n_id, TN);
+			visitor_process(shm, sems, file, n_id, args.TN);
 	}
 
 	//wait until all child processes end

@@ -7,7 +7,7 @@
 #include "shared_mem.h"
 
 //prints action to file synchronously
-void print_action(shared_t *shm, sem_t mutex, FILE *file, const char *fmt, ...);
+void print_action(shared_t *shm, sem_t *mutex, FILE *file, const char *fmt, ...);
 
 #endif
 
