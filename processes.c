@@ -88,6 +88,10 @@ void cart_process(shared_t *shm, semaphores_t *sem, FILE *file, int v_id, int TV
 
 		sem_wait(&sem->mutex);
 		print_action(shm, file, "V %d: boarding complete\n", v_id);
+
+		//claim departure number
+		int departure_num = shm->cart_departure_num;
+		shm->cart_departure_num++; //increment, so that next carts don't get the same num
 		sem_post(&sem->mutex);
 
 		//notify dispatcher about departure
@@ -95,28 +99,44 @@ void cart_process(shared_t *shm, semaphores_t *sem, FILE *file, int v_id, int TV
 
 		//wait for TV/2ms and wait to be the only cart in the destination (TODO rand)
 		usleep(TV/2);
-		sem_wait(&sem->cart_emptying);
 
-		//put id of cart that is to be emptied to shared memory (so that visitors know if they should leave)
-		sem_wait(&sem->mutex);
-		/* INSIDE MUTEX */
-		shm->leaving_cart_id = v_id;
-		shm->to_leave_cart = visitors_taken;
-		
-		print_action(shm, file, "V %d: leaving started\n", v_id);
-		/* LEAVING MUTEX */
-		sem_post(&sem->mutex);
+		while (true)
+		{
+			sem_wait(&sem->cart_emptying);
+			
+			//put id of cart that is to be emptied to shared memory (so that visitors know if they should leave)
+			sem_wait(&sem->mutex);
+			/* INSIDE MUTEX */
 
-		//tell visitors to leave
-		sem_post(&sem->leave_cart);
+			//if arrival num is not departure num, it's not yet time for this cart to start leaving
+			if (shm->cart_arrival_num != departure_num)
+			{
+				sem_post(&sem->mutex);
+				sem_post(&sem->cart_emptying);
+				continue;
+			}
+			
+			shm->cart_arrival_num++; //increment for next carts
+			shm->leaving_cart_id = v_id;
+			shm->to_leave_cart = visitors_taken;
+			
+			print_action(shm, file, "V %d: leaving started\n", v_id);
+			/* LEAVING MUTEX */
+			sem_post(&sem->mutex);
 
-		//wait until cart is empty (cue from the last visitor to leave)
-		sem_wait(&sem->cart_emptied);
-		sem_post(&sem->cart_emptying);
+			//tell visitors to leave
+			sem_post(&sem->leave_cart);
 
-		sem_wait(&sem->mutex);
-		print_action(shm, file, "V %d: leaving complete\n", v_id);
-		sem_post(&sem->mutex);
+			//wait until cart is empty (cue from the last visitor to leave)
+			sem_wait(&sem->cart_emptied);
+			sem_post(&sem->cart_emptying);
+
+			sem_wait(&sem->mutex);
+			print_action(shm, file, "V %d: leaving complete\n", v_id);
+			sem_post(&sem->mutex);
+
+			break; //if here, everything worked out
+		}
 	}
 
 	//check for being the last process

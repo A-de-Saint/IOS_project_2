@@ -11,6 +11,8 @@ typedef struct {
 	int to_be_boarded; 		//number of visitors that fit into the current cart 		(undef)
 	int boarding_cart_id; 	//the id of the cart that is currently open for boarding 	(undef)
 	int to_leave_cart; 		//number of visitors left to leave the cart 				(undef)
+	int cart_departure_num;	//number for a cart to claim when departing					(0)
+	int cart_arrival_num;	//a cart with this number is allowed to start leaving		(0)
 	int leaving_cart_id; 	//the id of the cart that is currently open for leaving 	(undef)
 	bool closing; 			//whether the attraction is closing or not 					(false)
 	int forked_count;		//count of running forked processes (main excluded)			(forked_count)

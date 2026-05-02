@@ -13,6 +13,8 @@ shared_t *shared_mem_init(int visitors_N, int forked_count)
 	shm->visitors_left = visitors_N;
 	shm->closing = false;
 	shm->forked_count = forked_count;
+	shm->cart_departure_num = 0;
+	shm->cart_arrival_num = 0;
 
 	return shm;
 }
