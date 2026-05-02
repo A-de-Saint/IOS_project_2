@@ -84,7 +84,7 @@ int main(int argc, char **argv)
 	}
 
 	//fork visitors
-	for (int n_id = 1; n_id < args.N; n_id++)
+	for (int n_id = 1; n_id <= args.N; n_id++)
 	{
 		pid = fork();
 		if (pid < 0)

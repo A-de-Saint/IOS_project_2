@@ -87,6 +87,9 @@ void cart_process(shared_t *shm, semaphores_t *sem, FILE *file, int v_id, int TV
 		sem_wait(&sem->cart_full);
 		print_action(shm, &sem->mutex, file, "V %d: boarding complete\n", v_id);
 
+		//notify dispatcher about departure
+		sem_post(&sem->cart_leaving);
+
 		//wait for TV/2ms and wait to be the only cart in the destination (TODO rand)
 		usleep(TV/2);
 		sem_wait(&sem->cart_emptying);
