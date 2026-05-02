@@ -22,11 +22,10 @@ typedef struct {
 	int cart_arrival_num;	//a cart with this number is allowed to start leaving		(0)
 	int leaving_cart_id; 	//the id of the cart that is currently open for leaving 	(undef)
 	bool closing; 			//whether the attraction is closing or not 					(false)
-	int forked_count;		//count of running forked processes (main excluded)			(forked_count)
 } shared_t;
 
 //maps and initializes shared memory (according to info in '()' above)
-shared_t *shared_mem_init(int visitors_N, int forked_count);
+shared_t *shared_mem_init(int visitors_N);
 
 //unmaps shared memory
 void shared_dtor(shared_t *shm);

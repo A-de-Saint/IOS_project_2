@@ -36,10 +36,8 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	int total_processes = 1 + args.N + args.V;
-
 	//get shared memory
-	shared_t *shm = shared_mem_init(args.N, total_processes);
+	shared_t *shm = shared_mem_init(args.N);
 	if (shm == NULL)
 	{
 		fprintf(stderr, "Could not map needed shared memory\n");

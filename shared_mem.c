@@ -8,7 +8,7 @@
 #include "shared_mem.h"
 #include <stdlib.h>
 
-shared_t *shared_mem_init(int visitors_N, int forked_count)
+shared_t *shared_mem_init(int visitors_N)
 {	
 	//shared memory allocation - not a file, 0 offset
 	shared_t *shm = mmap(NULL, sizeof(shared_t), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
@@ -19,7 +19,6 @@ shared_t *shared_mem_init(int visitors_N, int forked_count)
 	shm->action_counter = 1;
 	shm->visitors_left = visitors_N;
 	shm->closing = false;
-	shm->forked_count = forked_count;
 	shm->cart_departure_num = 0;
 	shm->cart_arrival_num = 0;
 

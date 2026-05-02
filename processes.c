@@ -48,15 +48,6 @@ void dispatcher_process(shared_t *shm, semaphores_t *sem, FILE *file, int O)
 		//wait for Omics
 		usleep(O);
 	}
-	
-	//check for being the last process
-	sem_wait(&sem->mutex);
-	/* INSIDE MUTEX */
-	shm->forked_count--;
-	if (shm->forked_count == 0)
-		sem_post(&sem->all_finished);
-	/* EXITTING MUTEX */
-	sem_post(&sem->mutex);
 
 	exit(0);
 }
@@ -159,15 +150,6 @@ void cart_process(shared_t *shm, semaphores_t *sem, FILE *file, int v_id, int TV
 		}
 	}
 
-	//check for being the last process
-	sem_wait(&sem->mutex);
-	/* INSIDE MUTEX */
-	shm->forked_count--;
-	if (shm->forked_count == 0)
-		sem_post(&sem->all_finished);
-	/* EXITTING MUTEX */
-	sem_post(&sem->mutex);
-
 	exit(0);
 }
 
@@ -230,15 +212,6 @@ void visitor_process(shared_t *shm, semaphores_t *sem, FILE *file, int n_id, int
 
 		break; //if here, resolved
 	}
-
-	//check for being the last process
-	sem_wait(&sem->mutex);
-	/* INSIDE MUTEX */
-	shm->forked_count--;
-	if (shm->forked_count == 0)
-		sem_post(&sem->all_finished);
-	/* EXITTING MUTEX */
-	sem_post(&sem->mutex);
 
 	exit(0);
 }
