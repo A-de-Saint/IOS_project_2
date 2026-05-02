@@ -1,3 +1,10 @@
+/**
+ * @file processes.c
+ * @author Antonín Hrnčíř <xhrncia00>
+ * @brief Processes called by main (in forks)
+ * @date 2026-05-02
+ */
+
 #include "processes.h"
 #include <time.h>
 

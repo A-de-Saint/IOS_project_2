@@ -1,3 +1,10 @@
+/**
+ * @file args_parser.h
+ * @author Antonín Hrnčíř <xhrncia00>
+ * @brief Header for the argument parser
+ * @date 2026-05-02
+ */
+
 #ifndef ARGS_PARSER_H
 #define ARGS_PARSER_H
 

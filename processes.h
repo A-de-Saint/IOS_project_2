@@ -1,3 +1,10 @@
+/**
+ * @file processes.h
+ * @author Antonín Hrnčíř <xhrncia00>
+ * @brief Header for processes
+ * @date 2026-05-02
+ */
+
 #ifndef PROCESSES_H
 #define PROCESSES_H
 

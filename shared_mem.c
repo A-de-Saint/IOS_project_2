@@ -1,3 +1,10 @@
+/**
+ * @file shared_mem.c
+ * @author Antonín Hrnčíř <xhrncia00>
+ * @brief Controller for shared memory mapping and unmapping
+ * @date 2026-05-02
+ */
+
 #include "shared_mem.h"
 #include <stdlib.h>
 

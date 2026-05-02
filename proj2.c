@@ -1,3 +1,10 @@
+/**
+ * @file proj2.c
+ * @author Antonín Hrnčíř <xhrncia00>
+ * @brief Main for rollercoaster project
+ * @date 2026-05-02
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>

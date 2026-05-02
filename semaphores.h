@@ -1,3 +1,10 @@
+/**
+ * @file semaphores.h
+ * @author Antonín Hrnčíř <xhrncia00>
+ * @brief Header for semaphores
+ * @date 2026-05-02
+ */
+
 #ifndef SEMAPHORES_H
 #define SEMAPHORES_H
 

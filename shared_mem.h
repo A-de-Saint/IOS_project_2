@@ -1,3 +1,10 @@
+/**
+ * @file shared_mem.h
+ * @author Antonín Hrnčíř <xhrncia00>
+ * @brief Header for shared memory
+ * @date 2026-05-02
+ */
+
 #ifndef SHARED_MEM_H
 #define SHARED_MEM_H
 

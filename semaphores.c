@@ -1,3 +1,10 @@
+/**
+ * @file semaphores.c
+ * @author Antonín Hrnčíř <xhrncia00>
+ * @brief Controller for semaphore allocation and destruction
+ * @date 2026-05-02
+ */
+
 #include "semaphores.h"
 #include <stdlib.h>
 

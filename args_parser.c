@@ -1,3 +1,10 @@
+/**
+ * @file args_parser.c
+ * @author Antonín Hrnčíř <xhrncia00>
+ * @brief Argument parser for this project
+ * @date 2026-05-02
+ */
+
 #include "args_parser.h"
 #include <stdlib.h>
 
